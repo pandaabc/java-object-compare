@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import compare.JocNode;
 import constant.Status;
+import engine.CompareFactory;
 import stubs.TestStubs;
 
 public class MapComparatorTest {
@@ -25,7 +26,7 @@ public class MapComparatorTest {
 		b.put("t2","tr2");
 		b.put("t4","tr5");
 		
-		MapComparator comparator = new MapComparator();
+		MapComparator comparator = new MapComparator(new CompareFactory());
 		
 		JocNode node = TestStubs.getJocNode();
 		

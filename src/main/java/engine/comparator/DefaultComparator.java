@@ -12,7 +12,11 @@ import interfaces.ICompare;
 
 public class DefaultComparator implements ICompare {
 
-	CompareFactory factory = new CompareFactory();
+	CompareFactory factory;
+	
+	public DefaultComparator(CompareFactory factory) {
+		this.factory = factory;
+	}
 	
 	@Override
 	public boolean compare(Object newObj, Object baseObj, JocNode parentNode, String path, Annotation... annotations) {
@@ -39,7 +43,7 @@ public class DefaultComparator implements ICompare {
 				try {
 					Object o1 = m.invoke(newObj);
 					Object o2 = m.invoke(baseObj);
-					curRes = new CompareFactory().getComparator(o1, o2).compare(o1, o2, curNode, ReflectionUtils.getFieldNameFromMethod(m), m.getAnnotations());
+					curRes = factory.getComparator(o1, o2).compare(o1, o2, curNode, ReflectionUtils.getFieldNameFromMethod(m), m.getAnnotations());
 				} catch (Exception e) {
 					
 				}

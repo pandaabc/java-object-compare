@@ -2,6 +2,8 @@ package engine;
 
 import compare.JocNode;
 import compare.utils.JocNodeUtils;
+import engine.report.JocReport;
+import interfaces.ICompare;
 
 public class JocCompare {
 	
@@ -9,6 +11,7 @@ public class JocCompare {
 	ReportFactory reportFactory;
 	Object newObj;
 	Object baseObj;
+	JocNode node;
 	
 	private JocCompare(CompareFactory compareFactory, ReportFactory reportFactory, Object newObj, Object baseObj) {
 		this.compareFactory = compareFactory;
@@ -17,20 +20,25 @@ public class JocCompare {
 		this.baseObj = baseObj;
 	}
 	
-	public Builder getBuilder() {
+	public static Builder getBuilder() {
 		return new Builder();
 	}
 	
-	public JocNode compare() {
+	public JocCompare compare() {
 		JocNode parent = JocNodeUtils.createParentNode();
 		compareFactory.getComparator(newObj, baseObj).compare(newObj, baseObj, parent, "");
-		return parent.getChildren().get(0);
+		node = parent.getChildren().get(0);
+		return this;
+	}
+	
+	public JocReport report() {
+		return new JocReport();
 	}
 	
 	public static class Builder{
 		
-		CompareFactory compareFactory;
-		ReportFactory reportFactory;
+		CompareFactory compareFactory = new CompareFactory();
+		ReportFactory reportFactory = new ReportFactory();
 		Object newObj;
 		Object baseObj;
 		
@@ -56,17 +64,23 @@ public class JocCompare {
 		}
 		
 		public JocCompare build() {
-			if (compareFactory == null) {
-				compareFactory = new CompareFactory();
-			}
-			if (reportFactory == null) {
-				reportFactory = new ReportFactory();
-			}
 			return new JocCompare(compareFactory, reportFactory, newObj, baseObj);
 		}
 		
-		public JocCompare defaultJocCompare(Object newObj, Object baseObj) {
-			return new JocCompare(new CompareFactory(), new ReportFactory(), newObj, baseObj);
+		public JocCompare buildDefaultJocCompare(Object newObj, Object baseObj) {
+			this.newObj = newObj;
+			this.baseObj = baseObj;
+			return build();
+		}
+		
+		public Builder addPathComparator(String path, ICompare comparator) {
+			this.compareFactory.addPathComparator(path, comparator);
+			return this;
+		}
+		
+		public Builder addClassComparator(Class<?> clazz, ICompare comparator) {
+			this.compareFactory.addClassComparator(clazz, comparator);
+			return this;
 		}
 				
 	}

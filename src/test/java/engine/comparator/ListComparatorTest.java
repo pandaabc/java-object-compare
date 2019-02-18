@@ -53,7 +53,7 @@ public class ListComparatorTest {
 		l2.add(a4);
 		l2.add(a5);
 		
-		ListComparator comparator = new ListComparator();
+		ListComparator comparator = new ListComparator(new CompareFactory());
 		
 		JocNode node = TestStubs.getJocNode();
 		

@@ -3,11 +3,14 @@ package engine.comparator;
 import java.awt.List;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import compare.JocNode;
+import engine.CompareFactory;
 import interfaces.ICompare;
 
 public abstract class AbstractComparator implements ICompare {
@@ -41,6 +44,9 @@ public abstract class AbstractComparator implements ICompare {
 			collectionClass.add(Set.class);
 			collectionClass.add(List.class);
 			collectionClass.add(Map.class);
+			collectionClass.add(HashSet.class);
+			collectionClass.add(ArrayList.class);
+			collectionClass.add(HashMap.class);
 			collectionClass.add(Array.class);
 		}
 		

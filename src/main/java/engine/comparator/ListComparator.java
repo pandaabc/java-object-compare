@@ -24,6 +24,12 @@ public class ListComparator extends AbstractComparator {
 	protected Predicate<Annotation> isJocCompareControl = annotation -> JocCompareController.class.equals(annotation.annotationType());
 	protected Predicate<Annotation[]> containsJocCompareControl = annotations -> Arrays.stream(annotations).anyMatch(isJocCompareControl);
 
+	CompareFactory factory;
+	
+	public ListComparator(CompareFactory factory) {
+		this.factory = factory;
+	}
+	
 	@Override
 	public boolean compare(Object newObj, Object baseObj, JocNode parentNode, String path, Annotation... annotations) {
 		
@@ -57,7 +63,7 @@ public class ListComparator extends AbstractComparator {
 			} else if (o2 == null) {
 				JocNodeUtils.createMissingJocNode(o1, curNode);
 			} else {
-				boolean curRes = new CompareFactory().getComparator(o1, o2).compare(o1, o2, curNode, "");
+				boolean curRes = factory.getComparator(o1, o2).compare(o1, o2, curNode, "");
 				if (!curRes) {
 					noChange = false;
 				}
@@ -98,11 +104,11 @@ public class ListComparator extends AbstractComparator {
 		}
 		
 		if (keyMethod == null) {
-			return new CompareFactory().getComparator(new HashSet<>(), new HashSet<>()).compare(new HashSet<>(newObjList), new HashSet<>(baseObjList), parentNode, "");
+			return factory.getComparator(new HashSet<>(), new HashSet<>()).compare(new HashSet<>(newObjList), new HashSet<>(baseObjList), parentNode, "");
 		} else {
 			Map<Object, Object> objMap1 = convertToMap(newObjList, keyMethod);
 			Map<Object, Object> objMap2 = convertToMap(baseObjList, keyMethod);
-			return new CompareFactory().getComparator(objMap1, objMap2).compare(objMap1, objMap2, parentNode, "");
+			return factory.getComparator(objMap1, objMap2).compare(objMap1, objMap2, parentNode, "");
 		}
 		
 	}

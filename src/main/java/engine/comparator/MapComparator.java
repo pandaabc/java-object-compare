@@ -11,6 +11,12 @@ import engine.CompareFactory;
 
 public class MapComparator extends AbstractComparator {
 
+	CompareFactory factory;
+	
+	public MapComparator(CompareFactory factory) {
+		this.factory = factory;
+	}
+	
 	@Override
 	public boolean compare(Object newObj, Object baseObj, JocNode parentNode, String path, Annotation... annotations) {
 		JocNode curNode = constructJocNode(newObj, baseObj, parentNode, path, annotations);
@@ -45,7 +51,7 @@ protected boolean compareOneWay(Map<Object, Object> newObj, Map<Object, Object> 
 			
 			if (baseObj.containsKey(o.getKey())) {
 				
-				boolean curRes = new CompareFactory().getComparator(o.getValue(), baseObj.get(o.getKey())).compare(o.getValue(), baseObj.get(o.getKey()), parentNode, "");
+				boolean curRes = factory.getComparator(o.getValue(), baseObj.get(o.getKey())).compare(o.getValue(), baseObj.get(o.getKey()), parentNode, "");
 								
 				if (!curRes) {
 					noChange = false;

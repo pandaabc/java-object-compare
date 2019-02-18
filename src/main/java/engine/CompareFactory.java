@@ -18,7 +18,8 @@ import interfaces.ICompare;
 
 public class CompareFactory {
 	
-	private Map<Class<?>, ICompare> comparators;
+	private Map<Class<?>, ICompare> classComparators;
+	private Map<String, ICompare> pathComparators;
 		
 	public ICompare getComparator(Object newObj, Object baseObj) {
 		
@@ -49,40 +50,66 @@ public class CompareFactory {
 	
 	private Map<Class<?>, ICompare> getComparators() {
 		
-		if (comparators == null) {
+		if (classComparators == null) {
 			setupComparators();
 		}
 		
-		return comparators;
+		return classComparators;
 		
 	}
 	
 	private void setupComparators() {
-		DefaultComparator defaultComparator = new DefaultComparator();
+		DefaultComparator defaultComparator = new DefaultComparator(this);
 		SimpleObjectComparator simpleObjectComparator = new SimpleObjectComparator();
-		MapComparator mapComparator = new MapComparator();
+		MapComparator mapComparator = new MapComparator(this);
 		SetComparator setComparator = new SetComparator();
-		ListComparator listComparator = new ListComparator();
+		ListComparator listComparator = new ListComparator(this);
 		
-		comparators = new HashMap<>();
+		classComparators = new HashMap<>();
 		
-		comparators.put(DefaultComparator.class, defaultComparator);
-		comparators.put(Boolean.class, simpleObjectComparator);
-		comparators.put(Character.class, simpleObjectComparator);
-		comparators.put(Byte.class, simpleObjectComparator);
-		comparators.put(Short.class, simpleObjectComparator);
-		comparators.put(Integer.class, simpleObjectComparator);
-		comparators.put(Long.class, simpleObjectComparator);
-		comparators.put(Float.class, simpleObjectComparator);
-		comparators.put(Double.class, simpleObjectComparator);
-		comparators.put(Void.class, simpleObjectComparator);
-		comparators.put(String.class, simpleObjectComparator);
-		comparators.put(Map.class, mapComparator);
-		comparators.put(HashMap.class, mapComparator);
-		comparators.put(Set.class, setComparator);
-		comparators.put(HashSet.class, setComparator);
-		comparators.put(List.class, listComparator);
-		comparators.put(ArrayList.class, listComparator);
+		classComparators.put(DefaultComparator.class, defaultComparator);
+		classComparators.put(Boolean.class, simpleObjectComparator);
+		classComparators.put(Character.class, simpleObjectComparator);
+		classComparators.put(Byte.class, simpleObjectComparator);
+		classComparators.put(Short.class, simpleObjectComparator);
+		classComparators.put(Integer.class, simpleObjectComparator);
+		classComparators.put(Long.class, simpleObjectComparator);
+		classComparators.put(Float.class, simpleObjectComparator);
+		classComparators.put(Double.class, simpleObjectComparator);
+		classComparators.put(Void.class, simpleObjectComparator);
+		classComparators.put(String.class, simpleObjectComparator);
+		classComparators.put(Map.class, mapComparator);
+		classComparators.put(HashMap.class, mapComparator);
+		classComparators.put(Set.class, setComparator);
+		classComparators.put(HashSet.class, setComparator);
+		classComparators.put(List.class, listComparator);
+		classComparators.put(ArrayList.class, listComparator);
+		
+	}
+	
+	public void addPathComparator(String path, ICompare comparator) {
+		
+		if (pathComparators == null) {
+			pathComparators = new HashMap<>();
+		}
+		
+		pathComparators.put(path, comparator);
+		
+	}
+	
+	public ICompare getPathComparator(String path) {
+		
+		return pathComparators == null ? null : pathComparators.get(path);
+		
+	}
+	
+	public void addClassComparator(Class<?> clazz, ICompare comparator) {
+		
+		if (classComparators == null) {
+			setupComparators();
+		}
+		
+		classComparators.put(clazz, comparator);
 		
 	}
 	
