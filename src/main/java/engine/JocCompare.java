@@ -28,7 +28,12 @@ public class JocCompare {
 		JocNode parent = JocNodeUtils.createParentNode();
 		compareFactory.getComparator(newObj, baseObj).compare(newObj, baseObj, parent, "");
 		node = parent.getChildren().get(0);
+		node.setParent(null);
 		return this;
+	}
+	
+	public JocNode getJocNode() {
+		return node;
 	}
 	
 	public JocReport report() {
@@ -71,11 +76,6 @@ public class JocCompare {
 			this.newObj = newObj;
 			this.baseObj = baseObj;
 			return build();
-		}
-		
-		public Builder addPathComparator(String path, ICompare comparator) {
-			this.compareFactory.addPathComparator(path, comparator);
-			return this;
 		}
 		
 		public Builder addClassComparator(Class<?> clazz, ICompare comparator) {

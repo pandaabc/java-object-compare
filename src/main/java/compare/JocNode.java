@@ -16,7 +16,7 @@ public class JocNode {
 	JocNode parent;
 	List<JocNode> children;
 	String currentPath;
-	String errorMessage;
+	List<String> errorMessage;
 	int index = 0;
 	int childIndexCount = 0;
 	Status status;
@@ -42,4 +42,28 @@ public class JocNode {
 		childIndexCount ++;
 		return childIndexCount - 1;
 	}
+	
+	public void addErrorMessage(String message) {
+		if (errorMessage == null) {
+			errorMessage = new ArrayList<>();
+		}
+		errorMessage.add(message);
+	}
+	
+	public String getPath(String separator) {
+		if (this.parent != null) {
+			return this.parent.getPath(separator) + separator + this.getCurrentPath();
+		}
+		return this.getCurrentPath();
+	}
+	
+	public String getPathAndIndex(String separator) {
+		String parentPath = null;
+		if (this.parent != null) {
+			parentPath = this.parent.getPath(separator) + separator;
+		}
+		String thisPath = this.getCurrentPath().isEmpty() ? String.valueOf(this.getIndex()) : this.getCurrentPath();
+		return parentPath == null ? thisPath : parentPath + thisPath;
+	}
+	
 }

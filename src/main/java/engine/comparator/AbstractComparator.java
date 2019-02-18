@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import compare.JocNode;
-import engine.CompareFactory;
 import interfaces.ICompare;
 
 public abstract class AbstractComparator implements ICompare {

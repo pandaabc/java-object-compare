@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import compare.JocNode;
 import compare.annotation.JocCompareController;
@@ -106,21 +107,20 @@ public class ListComparator extends AbstractComparator {
 		if (keyMethod == null) {
 			return factory.getComparator(new HashSet<>(), new HashSet<>()).compare(new HashSet<>(newObjList), new HashSet<>(baseObjList), parentNode, "");
 		} else {
-			Map<Object, Object> objMap1 = convertToMap(newObjList, keyMethod);
-			Map<Object, Object> objMap2 = convertToMap(baseObjList, keyMethod);
+			Map<Object, Object> objMap1 = convertToMap(newObjList, keyMethod, parentNode);
+			Map<Object, Object> objMap2 = convertToMap(baseObjList, keyMethod, parentNode);
 			return factory.getComparator(objMap1, objMap2).compare(objMap1, objMap2, parentNode, "");
 		}
 		
 	}
 	
-	protected Map<Object, Object> convertToMap(List<Object> objs, Method m) {
+	protected Map<Object, Object> convertToMap(List<Object> objs, Method m, JocNode node) {
 		
 		return objs.stream().collect(Collectors.toMap(obj -> {
 			try {
 				return m.invoke(obj);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				node.addErrorMessage(ExceptionUtils.getStackTrace(e));;
 			}
 			return null;
 		}, obj -> obj));

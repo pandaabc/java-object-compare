@@ -19,7 +19,6 @@ import interfaces.ICompare;
 public class CompareFactory {
 	
 	private Map<Class<?>, ICompare> classComparators;
-	private Map<String, ICompare> pathComparators;
 		
 	public ICompare getComparator(Object newObj, Object baseObj) {
 		
@@ -84,22 +83,6 @@ public class CompareFactory {
 		classComparators.put(HashSet.class, setComparator);
 		classComparators.put(List.class, listComparator);
 		classComparators.put(ArrayList.class, listComparator);
-		
-	}
-	
-	public void addPathComparator(String path, ICompare comparator) {
-		
-		if (pathComparators == null) {
-			pathComparators = new HashMap<>();
-		}
-		
-		pathComparators.put(path, comparator);
-		
-	}
-	
-	public ICompare getPathComparator(String path) {
-		
-		return pathComparators == null ? null : pathComparators.get(path);
 		
 	}
 	

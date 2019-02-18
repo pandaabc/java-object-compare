@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Set;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import compare.JocNode;
 import compare.utils.ReflectionUtils;
 import constant.Status;
@@ -45,7 +47,7 @@ public class DefaultComparator implements ICompare {
 					Object o2 = m.invoke(baseObj);
 					curRes = factory.getComparator(o1, o2).compare(o1, o2, curNode, ReflectionUtils.getFieldNameFromMethod(m), m.getAnnotations());
 				} catch (Exception e) {
-					
+					curNode.addErrorMessage(ExceptionUtils.getStackTrace(e));
 				}
 				if (!curRes) {
 					noChange = false;
