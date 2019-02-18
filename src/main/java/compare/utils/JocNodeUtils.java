@@ -32,5 +32,10 @@ public class JocNodeUtils {
 		curNode.setStatus(Status.UNEXPECTED);
 		return curNode;
 	}
+	
+	public static JocNode createParentNode() {
+		JocNode curNode = new JocNode(null, null, "");
+		return curNode;
+	}
 
 }
