@@ -3,38 +3,45 @@ package engine;
 import java.util.HashMap;
 import java.util.Map;
 
+import engine.report.ReportConsolidatorFunction;
 import engine.report.ReportFormatter;
 import engine.report.ReportFormatterFunction;
 
 public class ReportFactory {
-	private Map<Class<?>, ReportFormatter> classFormatters;
+	private Map<Class<?>, ReportFormatter> formatters;
+	
+	public ReportFormatter getReportFormatter(Class<?> clazz) {
+		return getReportFormatters().containsKey(clazz) ? getReportFormatters().get(clazz) : getReportFormatters().get(ReportFormatter.class);
+	}
 	
 	protected Map<Class<?>, ReportFormatter> getReportFormatters() {
 		
-		if (classFormatters == null) {
+		if (formatters == null) {
 			setupFormatters();
 		}
 		
-		return classFormatters;
+		return formatters;
 		
 	}
 	
 	private void setupFormatters() {
-		ReportFormatter defaultReportFormatter = new ReportFormatter(ReportFormatterFunction.SIMPLE_PATH_FORMATTER.getFunction(), ReportFormatterFunction.SIMPLE_MESSAGE_FORMATTER.getFunction());
+		ReportFormatter defaultReportFormatter = new ReportFormatter(ReportFormatterFunction.SIMPLE_PATH_FORMATTER.getFunction(), 
+																	ReportFormatterFunction.SIMPLE_MESSAGE_FORMATTER.getFunction(),
+																	ReportConsolidatorFunction.SIMPLE_CONSOLIDATOR.getFunction());
 		
-		classFormatters = new HashMap<>();
+		formatters = new HashMap<>();
 		
-		classFormatters.put(ReportFormatter.class, defaultReportFormatter);
+		formatters.put(ReportFormatter.class, defaultReportFormatter);
 		
 	}
 	
-	public void addClassComparator(Class<?> clazz, ReportFormatter reportFormatter) {
+	public void addFormatter(Class<?> clazz, ReportFormatter reportFormatter) {
 		
-		if (classFormatters == null) {
+		if (formatters == null) {
 			setupFormatters();
 		}
 		
-		classFormatters.put(clazz, reportFormatter);
+		formatters.put(clazz, reportFormatter);
 		
 	}
 }

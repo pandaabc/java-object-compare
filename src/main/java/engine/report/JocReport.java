@@ -1,5 +1,12 @@
 package engine.report;
 
-public class JocReport {
+import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class JocReport {
+	List<JocReportNode> reports;
 }

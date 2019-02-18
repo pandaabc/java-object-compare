@@ -3,6 +3,7 @@ package compare;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import constant.Status;
 import lombok.Getter;
@@ -64,6 +65,22 @@ public class JocNode {
 		}
 		String thisPath = this.getCurrentPath().isEmpty() ? String.valueOf(this.getIndex()) : this.getCurrentPath();
 		return parentPath == null ? thisPath : parentPath + thisPath;
+	}
+	
+	public List<JocNode> getAllChildrenNodes() {
+		List<JocNode> allChildrenNodes = this.getChildren()
+											.stream()
+											.map(JocNode::getAllChildrenNodes)
+											.flatMap(List::stream)
+											.collect(Collectors.toList());
+		allChildrenNodes.addAll(this.getChildren());
+		return allChildrenNodes;
+	}
+	
+	public List<JocNode> getAllNodes() {
+		List<JocNode> allNodes = getAllChildrenNodes();
+		allNodes.add(this);
+		return allNodes;
 	}
 	
 }

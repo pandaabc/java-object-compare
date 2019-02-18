@@ -1,8 +1,13 @@
 package engine;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import compare.JocNode;
 import compare.utils.JocNodeUtils;
+import constant.Status;
 import engine.report.JocReport;
+import engine.report.JocReportNode;
 import interfaces.ICompare;
 
 public class JocCompare {
@@ -36,8 +41,27 @@ public class JocCompare {
 		return node;
 	}
 	
-	public JocReport report() {
-		return new JocReport();
+	public JocReport reportAll() {
+		List<JocReportNode> reportList = getJocNode()
+										.getAllNodes()
+										.stream()
+										.map(n -> reportFactory.getReportFormatter(n.getBaseObject() == null ? n.getNewObject().getClass() : n.getBaseObject().getClass()).format(n))
+										.collect(Collectors.toList());
+		JocReport report = new JocReport();
+		report.setReports(reportList);
+		return report;
+	}
+	
+	public JocReport reportDiff() {
+		List<JocReportNode> reportList = getJocNode()
+										.getAllNodes()
+										.stream()
+										.filter(n -> !Status.NOCHANGE.equals(n.getStatus()))
+										.map(n -> reportFactory.getReportFormatter(n.getBaseObject() == null ? n.getNewObject().getClass() : n.getBaseObject().getClass()).format(n))
+										.collect(Collectors.toList());
+		JocReport report = new JocReport();
+		report.setReports(reportList);
+		return report;
 	}
 	
 	public static class Builder{
