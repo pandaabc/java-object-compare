@@ -61,19 +61,22 @@ public class JocNode {
 	public String getPathAndIndex(String separator) {
 		String parentPath = null;
 		if (this.parent != null) {
-			parentPath = this.parent.getPath(separator) + separator;
+			parentPath = this.parent.getPathAndIndex(separator) + separator;
 		}
 		String thisPath = this.getCurrentPath().isEmpty() ? String.valueOf(this.getIndex()) : this.getCurrentPath();
 		return parentPath == null ? thisPath : parentPath + thisPath;
 	}
 	
 	public List<JocNode> getAllChildrenNodes() {
-		List<JocNode> allChildrenNodes = this.getChildren()
-											.stream()
-											.map(JocNode::getAllChildrenNodes)
-											.flatMap(List::stream)
-											.collect(Collectors.toList());
-		allChildrenNodes.addAll(this.getChildren());
+		if (this.getChildren() == null) {
+			return new ArrayList<>();
+		}
+		List<JocNode> allChildrenNodes = this.getChildren();
+		allChildrenNodes.addAll(this.getChildren()
+										.stream()
+										.map(JocNode::getAllChildrenNodes)
+										.flatMap(List::stream)
+										.collect(Collectors.toList()));
 		return allChildrenNodes;
 	}
 	

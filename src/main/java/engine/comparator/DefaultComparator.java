@@ -10,9 +10,8 @@ import compare.JocNode;
 import compare.utils.ReflectionUtils;
 import constant.Status;
 import engine.CompareFactory;
-import interfaces.ICompare;
 
-public class DefaultComparator implements ICompare {
+public class DefaultComparator extends AbstractComparator {
 
 	CompareFactory factory;
 	
@@ -23,9 +22,8 @@ public class DefaultComparator implements ICompare {
 	@Override
 	public boolean compare(Object newObj, Object baseObj, JocNode parentNode, String path, Annotation... annotations) {
 		
-		JocNode curNode = new JocNode(newObj, baseObj, path);
-		curNode.setParent(parentNode);
-		parentNode.addChild(curNode);
+		
+		JocNode curNode = constructJocNode(newObj, baseObj, parentNode, path, annotations);
 		
 		boolean noChange = true;
 		

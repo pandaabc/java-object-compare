@@ -78,7 +78,7 @@ public class ListComparator extends AbstractComparator {
 		
 		Optional<Annotation> controlAnnotationOptional = Arrays.stream(annotations).filter(isJocCompareControl).findFirst();
 		if (isCrossCompare(controlAnnotationOptional)) {
-			return crossCompareInternal(newObjList, baseObjList, parentNode, (JocCompareController)controlAnnotationOptional.get());
+			return crossCompareInternal(newObjList, baseObjList, parentNode, path, (JocCompareController)controlAnnotationOptional.get());
 		} else {
 			JocNode curNode = constructJocNode(newObjList, baseObjList, parentNode, path, annotations);
 			boolean noChange = compareOrderred(newObjList, baseObjList, curNode);
@@ -92,7 +92,7 @@ public class ListComparator extends AbstractComparator {
 		return controlAnnotationOptional.isPresent() && ((JocCompareController)controlAnnotationOptional.get()).crossCompare();
 	}
 	
-	protected boolean crossCompareInternal(List<Object> newObjList, List<Object> baseObjList, JocNode parentNode, JocCompareController annotation) {
+	protected boolean crossCompareInternal(List<Object> newObjList, List<Object> baseObjList, JocNode parentNode, String path, JocCompareController annotation) {
 		
 		if (newObjList.isEmpty() && baseObjList.isEmpty()) {
 			return true;
@@ -105,11 +105,11 @@ public class ListComparator extends AbstractComparator {
 		}
 		
 		if (keyMethod == null) {
-			return factory.getComparator(new HashSet<>(), new HashSet<>()).compare(new HashSet<>(newObjList), new HashSet<>(baseObjList), parentNode, "");
+			return factory.getComparator(new HashSet<>(), new HashSet<>()).compare(new HashSet<>(newObjList), new HashSet<>(baseObjList), parentNode, path);
 		} else {
 			Map<Object, Object> objMap1 = convertToMap(newObjList, keyMethod, parentNode);
 			Map<Object, Object> objMap2 = convertToMap(baseObjList, keyMethod, parentNode);
-			return factory.getComparator(objMap1, objMap2).compare(objMap1, objMap2, parentNode, "");
+			return factory.getComparator(objMap1, objMap2).compare(objMap1, objMap2, parentNode, path);
 		}
 		
 	}

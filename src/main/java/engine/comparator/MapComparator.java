@@ -43,7 +43,7 @@ public class MapComparator extends AbstractComparator {
 		return noChange;
 	}
 
-protected boolean compareOneWay(Map<Object, Object> newObj, Map<Object, Object> baseObj, JocNode parentNode) {
+	protected boolean compareOneWay(Map<Object, Object> newObj, Map<Object, Object> baseObj, JocNode parentNode) {
 		
 		boolean noChange = true;
 		

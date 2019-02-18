@@ -6,7 +6,6 @@ import java.util.Set;
 import compare.JocNode;
 import compare.utils.JocNodeUtils;
 import constant.Status;
-import interfaces.ICompare;
 
 public class SetComparator extends AbstractComparator {
 

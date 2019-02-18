@@ -17,12 +17,14 @@ public class JocCompare {
 	Object newObj;
 	Object baseObj;
 	JocNode node;
+	String compareName;
 	
-	private JocCompare(CompareFactory compareFactory, ReportFactory reportFactory, Object newObj, Object baseObj) {
+	private JocCompare(CompareFactory compareFactory, ReportFactory reportFactory, Object newObj, Object baseObj, String compareName) {
 		this.compareFactory = compareFactory;
 		this.reportFactory = reportFactory;
 		this.newObj = newObj;
 		this.baseObj = baseObj;
+		this.compareName = compareName;
 	}
 	
 	public static Builder getBuilder() {
@@ -31,7 +33,7 @@ public class JocCompare {
 	
 	public JocCompare compare() {
 		JocNode parent = JocNodeUtils.createParentNode();
-		compareFactory.getComparator(newObj, baseObj).compare(newObj, baseObj, parent, "");
+		compareFactory.getComparator(newObj, baseObj).compare(newObj, baseObj, parent, compareName);
 		node = parent.getChildren().get(0);
 		node.setParent(null);
 		return this;
@@ -70,6 +72,7 @@ public class JocCompare {
 		ReportFactory reportFactory = new ReportFactory();
 		Object newObj;
 		Object baseObj;
+		String compareName;
 		
 		
 		public Builder setCompareFactory(CompareFactory compareFactory) {
@@ -92,13 +95,22 @@ public class JocCompare {
 			return this;
 		}
 		
+		public Builder setCompareName(String compareName) {
+			this.compareName = compareName;
+			return this;
+		}
+		
 		public JocCompare build() {
-			return new JocCompare(compareFactory, reportFactory, newObj, baseObj);
+			if (compareName == null) {
+				this.compareName = newObj == null ? (baseObj == null ? "null" : baseObj.getClass().getSimpleName()) : newObj.getClass().getSimpleName();
+			}
+			return new JocCompare(compareFactory, reportFactory, newObj, baseObj, compareName);
 		}
 		
 		public JocCompare buildDefaultJocCompare(Object newObj, Object baseObj) {
 			this.newObj = newObj;
 			this.baseObj = baseObj;
+			this.compareName = newObj == null ? (baseObj == null ? "null" : baseObj.getClass().getSimpleName()) : newObj.getClass().getSimpleName();
 			return build();
 		}
 		

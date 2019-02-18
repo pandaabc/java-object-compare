@@ -3,7 +3,9 @@ package stubs;
 import java.util.List;
 
 import compare.annotation.JocCompareController;
+import lombok.ToString;
 
+@ToString
 public class StubClassWithCompareControlAndKey {
 	List<StubClass2> stubs;
 	

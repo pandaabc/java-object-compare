@@ -7,7 +7,7 @@ import compare.JocNode;
 public enum ReportFormatterFunction {
 	SIMPLE_PATH_FORMATTER(node -> node.getPath("/")), 
 	SIMPLE_INDEXED_PATH_FORMATTER(node -> node.getPathAndIndex("/")), 
-	SIMPLE_MESSAGE_FORMATTER(node -> node.getStatus().toString() + "- from: " + node.getBaseObject().toString() + " to: " + node.getNewObject().toString());
+	SIMPLE_MESSAGE_FORMATTER(node -> node.getStatus().toString() + " :: from: " + node.getBaseObject() + " to: " + node.getNewObject());
 	
 	Function<JocNode, String> function;
 	

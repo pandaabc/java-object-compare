@@ -25,7 +25,7 @@ public class ReportFactory {
 	}
 	
 	private void setupFormatters() {
-		ReportFormatter defaultReportFormatter = new ReportFormatter(ReportFormatterFunction.SIMPLE_PATH_FORMATTER.getFunction(), 
+		ReportFormatter defaultReportFormatter = new ReportFormatter(ReportFormatterFunction.SIMPLE_INDEXED_PATH_FORMATTER.getFunction(), 
 																	ReportFormatterFunction.SIMPLE_MESSAGE_FORMATTER.getFunction(),
 																	ReportConsolidatorFunction.SIMPLE_CONSOLIDATOR.getFunction());
 		
