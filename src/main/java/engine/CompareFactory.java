@@ -1,12 +1,19 @@
 package engine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import compare.annotation.JocComparator;
 import compare.exception.UnexpectedComparatorException;
 import engine.comparator.DefaultComparator;
-import engine.comparator.PrimitiveWrapperComparator;
+import engine.comparator.ListComparator;
+import engine.comparator.MapComparator;
+import engine.comparator.SetComparator;
+import engine.comparator.SimpleObjectComparator;
 import interfaces.ICompare;
 
 public class CompareFactory {
@@ -15,7 +22,7 @@ public class CompareFactory {
 		
 	public ICompare getComparator(Object newObj, Object baseObj) {
 		
-		if (!newObj.getClass().equals(baseObj.getClass())){
+		if (newObj == null || baseObj == null || !newObj.getClass().equals(baseObj.getClass())){
 			return getComparators().get(DefaultComparator.class);
 		}
 		
@@ -35,8 +42,8 @@ public class CompareFactory {
 			});
 			return getComparators().get(jc.clazz());
 		}
-				
-		return getComparators().get(newObj.getClass());
+		
+		return getComparators().containsKey(newObj.getClass()) ? getComparators().get(newObj.getClass()) : getComparators().get(DefaultComparator.class);
 		
 	}
 	
@@ -52,20 +59,30 @@ public class CompareFactory {
 	
 	private void setupComparators() {
 		DefaultComparator defaultComparator = new DefaultComparator();
-		PrimitiveWrapperComparator primitiveWrapperComparator = new PrimitiveWrapperComparator();
+		SimpleObjectComparator simpleObjectComparator = new SimpleObjectComparator();
+		MapComparator mapComparator = new MapComparator();
+		SetComparator setComparator = new SetComparator();
+		ListComparator listComparator = new ListComparator();
 		
 		comparators = new HashMap<>();
 		
 		comparators.put(DefaultComparator.class, defaultComparator);
-		comparators.put(Boolean.class, primitiveWrapperComparator);
-		comparators.put(Character.class, primitiveWrapperComparator);
-		comparators.put(Byte.class, primitiveWrapperComparator);
-		comparators.put(Short.class, primitiveWrapperComparator);
-		comparators.put(Integer.class, primitiveWrapperComparator);
-		comparators.put(Long.class, primitiveWrapperComparator);
-		comparators.put(Float.class, primitiveWrapperComparator);
-		comparators.put(Double.class, primitiveWrapperComparator);
-		comparators.put(Void.class, primitiveWrapperComparator);
+		comparators.put(Boolean.class, simpleObjectComparator);
+		comparators.put(Character.class, simpleObjectComparator);
+		comparators.put(Byte.class, simpleObjectComparator);
+		comparators.put(Short.class, simpleObjectComparator);
+		comparators.put(Integer.class, simpleObjectComparator);
+		comparators.put(Long.class, simpleObjectComparator);
+		comparators.put(Float.class, simpleObjectComparator);
+		comparators.put(Double.class, simpleObjectComparator);
+		comparators.put(Void.class, simpleObjectComparator);
+		comparators.put(String.class, simpleObjectComparator);
+		comparators.put(Map.class, mapComparator);
+		comparators.put(HashMap.class, mapComparator);
+		comparators.put(Set.class, setComparator);
+		comparators.put(HashSet.class, setComparator);
+		comparators.put(List.class, listComparator);
+		comparators.put(ArrayList.class, listComparator);
 		
 	}
 	

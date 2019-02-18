@@ -1,2 +1,6 @@
+/AbstractComparator.class
 /DefaultComparator.class
-/PrimitiveWrapperComparator.class
+/ListComparator.class
+/MapComparator.class
+/SimpleObjectComparator.class
+/SetComparator.class
