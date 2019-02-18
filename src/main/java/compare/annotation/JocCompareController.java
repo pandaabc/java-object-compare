@@ -7,8 +7,9 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface JocCompareControl {
+public @interface JocCompareController {
 	boolean crossCompare() default false;
 	boolean indexDiff() default false;
 	String key() default "";
+	boolean ignore() default false;
 }

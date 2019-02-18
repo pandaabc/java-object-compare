@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.ArrayUtils;
 
 import compare.JocNode;
-import compare.annotation.JocCompareControl;
+import compare.annotation.JocCompareController;
 import compare.utils.JocNodeUtils;
 import compare.utils.ReflectionUtils;
 import constant.Status;
@@ -21,7 +21,7 @@ import engine.CompareFactory;
 
 public class ListComparator extends AbstractComparator {
 	
-	protected Predicate<Annotation> isJocCompareControl = annotation -> JocCompareControl.class.equals(annotation.annotationType());
+	protected Predicate<Annotation> isJocCompareControl = annotation -> JocCompareController.class.equals(annotation.annotationType());
 	protected Predicate<Annotation[]> containsJocCompareControl = annotations -> Arrays.stream(annotations).anyMatch(isJocCompareControl);
 
 	@Override
@@ -71,7 +71,7 @@ public class ListComparator extends AbstractComparator {
 		
 		Optional<Annotation> controlAnnotationOptional = Arrays.stream(annotations).filter(isJocCompareControl).findFirst();
 		if (isCrossCompare(controlAnnotationOptional)) {
-			return crossCompareInternal(newObjList, baseObjList, parentNode, (JocCompareControl)controlAnnotationOptional.get());
+			return crossCompareInternal(newObjList, baseObjList, parentNode, (JocCompareController)controlAnnotationOptional.get());
 		} else {
 			JocNode curNode = constructJocNode(newObjList, baseObjList, parentNode, path, annotations);
 			boolean noChange = compareOrderred(newObjList, baseObjList, curNode);
@@ -82,10 +82,10 @@ public class ListComparator extends AbstractComparator {
 	}
 	
 	protected boolean isCrossCompare(Optional<Annotation> controlAnnotationOptional) {
-		return controlAnnotationOptional.isPresent() && ((JocCompareControl)controlAnnotationOptional.get()).crossCompare();
+		return controlAnnotationOptional.isPresent() && ((JocCompareController)controlAnnotationOptional.get()).crossCompare();
 	}
 	
-	protected boolean crossCompareInternal(List<Object> newObjList, List<Object> baseObjList, JocNode parentNode, JocCompareControl annotation) {
+	protected boolean crossCompareInternal(List<Object> newObjList, List<Object> baseObjList, JocNode parentNode, JocCompareController annotation) {
 		
 		if (newObjList.isEmpty() && baseObjList.isEmpty()) {
 			return true;

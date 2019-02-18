@@ -2,12 +2,12 @@ package stubs;
 
 import java.util.List;
 
-import compare.annotation.JocCompareControl;
+import compare.annotation.JocCompareController;
 
 public class StubClassWithCompareControl {
 	List<StubClass2> stubs;
 	
-	@JocCompareControl(crossCompare=true, indexDiff=true)
+	@JocCompareController(crossCompare=true, indexDiff=true)
 	public List<StubClass2> getStubs() {
 		return stubs;
 	}
